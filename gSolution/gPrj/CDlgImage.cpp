@@ -6,8 +6,9 @@
 #include "afxdialogex.h"
 #include "CDlgImage.h"
 #include "gPrjDlg.h"
+#include <iostream>
 
-
+using namespace std;
 
 // CDlgImage 대화 상자
 
@@ -96,8 +97,13 @@ void CDlgImage::drawData(CDC* pDC)
 	int y = rand() % nHeight;
 	//fm[y * nPitch + x] = 0;
 
-	CRect rect(100, 100, x, y);
+	cout << x << "," << y << endl;
+
+	// 좌표를 찍음.
+	CRect rect(x, x + 10, y - 10, y);
 	//CRect rectSmall(120, 120, 2, 2);
+
+	// Ellipse 원 그리기.
 	pDC->Ellipse(rect);
 	//pDC->Ellipse(rectSmall);
 

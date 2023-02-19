@@ -63,6 +63,7 @@ CgPrjDlg::CgPrjDlg(CWnd* pParent /*=nullptr*/)
 void CgPrjDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_EDIT_RADIUS, EditRadius);
 }
 
 BEGIN_MESSAGE_MAP(CgPrjDlg, CDialogEx)
@@ -172,18 +173,9 @@ void CgPrjDlg::OnDestroy()
 }
 
 void CgPrjDlg::OnBnClickedBtnTest()
-{
-	unsigned char* fm = (unsigned char*)m_pDlgImage->m_Image.GetBits();
-	int nWidth = m_pDlgImage->m_Image.GetWidth();
-	int nHeight = m_pDlgImage->m_Image.GetHeight();
-	int nPitch = m_pDlgImage->m_Image.GetPitch();
-
-	int x = rand() % nWidth;
-	int y = rand() % nHeight;
-	fm[y * nPitch + x] = 0;
-	
-	cout << x << "," << y << endl;
-	
+{	
+	// Invalidate(); -> OnPaint 함수를 실행.
+	// 출처 : https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=idjoopal&logNo=100185795644
 	m_pDlgImage->Invalidate();
 }
 
