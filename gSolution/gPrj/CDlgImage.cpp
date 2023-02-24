@@ -88,38 +88,41 @@ void CDlgImage::drawData(CDC* pDC)
 	// Edit Control에 있는 값 가져오기.
 	int nRadius = ((CgPrjDlg*)GetParent())->m_nRadius;
 
-	// 선 색칠하기 
-	// 좀 더 자세한 내용.
-	// https://m.blog.naver.com/idjoopal/100185800818 
-	CPen yellowPen;
-	yellowPen.CreatePen(PS_SOLID, 2, COLOR_YELLOW);
-	CPen* pYellowPen = pDC->SelectObject(&yellowPen);
-
 	int nWidth = m_Image.GetWidth();
 	int nHeight = m_Image.GetHeight();
 
 	int nDrawCircleX = rand() % (nWidth - nRadius);
 	int nDrawCircleY = rand() % (nHeight - nRadius);
 
-	// 원 그리기.
-	CRect rect(nDrawCircleX, nDrawCircleY, nDrawCircleX + nRadius, nDrawCircleY + nRadius);
-	pDC->Ellipse(rect);
-	pDC->SelectObject(pYellowPen);
+	if (nRadius != 0) {
+		// 선 색칠하기 
+		// 좀 더 자세한 내용.
+		// https://m.blog.naver.com/idjoopal/100185800818 
+		CPen yellowPen;
+		yellowPen.CreatePen(PS_SOLID, 2, COLOR_YELLOW);
+		CPen* pYellowPen = pDC->SelectObject(&yellowPen);
 
-	// 원의 중심 좌표 구하기.
-	CPoint centerPos = rect.CenterPoint();
 
-	CBrush redBrush;
-	redBrush.CreateSolidBrush(COLOR_RED);
-	CBrush* pRedBrush =(CBrush*) pDC->SelectObject(&redBrush);
+		// 원 그리기.
+		CRect rect(nDrawCircleX, nDrawCircleY, nDrawCircleX + nRadius, nDrawCircleY + nRadius);
+		pDC->Ellipse(rect);
+		pDC->SelectObject(pYellowPen);
+
+		// 원의 중심 좌표 구하기.
+		CPoint centerPos = rect.CenterPoint();
 	
-	// 가로 한 줄 그리기 
-	CRect rawSquare(centerPos.x - 10, centerPos.y - 20, centerPos.x + 10, centerPos.y + 20);
-	pDC->Rectangle(rawSquare);
+		CBrush redBrush;
+		redBrush.CreateSolidBrush(COLOR_RED);
+		CBrush* pRedBrush =(CBrush*) pDC->SelectObject(&redBrush);
 
-	// 세로 한 줄 그리기 
-	CRect colSquare(centerPos.x - 20, centerPos.y - 10, centerPos.x + 20, centerPos.y + 10);
-	pDC->Rectangle(colSquare);
+		// 가로 한 줄 그리기 
+		CRect rawSquare(centerPos.x - 10, centerPos.y - 20, centerPos.x + 10, centerPos.y + 20);
+		pDC->Rectangle(rawSquare);
 
-	pDC->SelectObject(pRedBrush);
+		// 세로 한 줄 그리기 
+		CRect colSquare(centerPos.x - 20, centerPos.y - 10, centerPos.x + 20, centerPos.y + 10);
+		pDC->Rectangle(colSquare);
+
+		pDC->SelectObject(pRedBrush);
+	}
 }
