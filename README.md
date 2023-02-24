@@ -4,6 +4,8 @@ https://youtube.com/playlist?list=PLlIX4lkC1JdMx-vfK8I-J3-L-GL7TbMf9를 보고 �
 최종 내용은 4-8 과제입니다.
 
 # 완성본
+![image](https://user-images.githubusercontent.com/76469276/221108057-35a6a3ac-aef3-4ec4-8dfe-723ea4615f21.png)
+
 
 # 소감
 출제자의 의도와는 조금 다른 결과물인 것 같습니다..
