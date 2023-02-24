@@ -83,15 +83,17 @@ void CDlgImage::InitImage()
 	memset(fm, 0xff, nWidth * nHeight);
 }
 
-#define color
 void CDlgImage::drawData(CDC* pDC)
 {
+	// Edit Control에 있는 값 가져오기.
 	int nRadius = ((CgPrjDlg*)GetParent())->m_nRadius;
 
+	// 선 색칠하기 
+	// 좀 더 자세한 내용.
+	// https://m.blog.naver.com/idjoopal/100185800818 
 	CPen yellowPen;
 	yellowPen.CreatePen(PS_SOLID, 2, COLOR_YELLOW);
 	CPen* pYellowPen = pDC->SelectObject(&yellowPen);
-
 
 	int nWidth = m_Image.GetWidth();
 	int nHeight = m_Image.GetHeight();
@@ -107,9 +109,9 @@ void CDlgImage::drawData(CDC* pDC)
 	// 원의 중심 좌표 구하기.
 	CPoint centerPos = rect.CenterPoint();
 
-	CPen redPen;
-	redPen.CreatePen(PS_SOLID, 2, COLOR_RED);
-	CPen* pRedPen = pDC->SelectObject(&redPen);
+	CBrush redBrush;
+	redBrush.CreateSolidBrush(COLOR_RED);
+	CBrush* pRedBrush =(CBrush*) pDC->SelectObject(&redBrush);
 	
 	// 가로 한 줄 그리기 
 	CRect rawSquare(centerPos.x - 10, centerPos.y - 20, centerPos.x + 10, centerPos.y + 20);
@@ -119,5 +121,5 @@ void CDlgImage::drawData(CDC* pDC)
 	CRect colSquare(centerPos.x - 20, centerPos.y - 10, centerPos.x + 20, centerPos.y + 10);
 	pDC->Rectangle(colSquare);
 
-	pDC->SelectObject(pRedPen);
+	pDC->SelectObject(pRedBrush);
 }
