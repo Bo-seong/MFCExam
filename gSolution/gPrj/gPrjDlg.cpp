@@ -56,6 +56,7 @@ END_MESSAGE_MAP()
 
 CgPrjDlg::CgPrjDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_GPRJ_DIALOG, pParent)
+	, m_nRadius(0)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -63,7 +64,7 @@ CgPrjDlg::CgPrjDlg(CWnd* pParent /*=nullptr*/)
 void CgPrjDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_EDIT_RADIUS, EditRadius);
+	DDX_Text(pDX, IDC_EDIT_RADIUS, m_nRadius);
 }
 
 BEGIN_MESSAGE_MAP(CgPrjDlg, CDialogEx)
@@ -107,7 +108,8 @@ BOOL CgPrjDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
-	MoveWindow(0, 0, 650, 800);
+	MoveWindow(0, 0, 1280, 800);
+
 	m_pDlgImage = new CDlgImage;
 	m_pDlgImage->Create(IDD_DLGIMAGE, this);
 	m_pDlgImage->ShowWindow(SW_SHOW);
@@ -169,13 +171,53 @@ void CgPrjDlg::OnDestroy()
 {
 	CDialogEx::OnDestroy();
 
-	if(m_pDlgImage)	delete m_pDlgImage;
+	if(m_pDlgImage)			delete m_pDlgImage;
 }
 
 void CgPrjDlg::OnBnClickedBtnTest()
 {	
-	// Invalidate(); -> OnPaint 함수를 실행.
-	// 출처 : https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=idjoopal&logNo=100185795644
+	UpdateData(true);
+
+	unsigned char* fm = (unsigned char*)m_pDlgImage->m_Image.GetBits();
+	int nWidth = m_pDlgImage->m_Image.GetWidth();
+	int nHeight = m_pDlgImage->m_Image.GetHeight();
+	int nPitch = m_pDlgImage->m_Image.GetPitch();
+	memset(fm, 0xff, nWidth * nHeight);
+	
 	m_pDlgImage->Invalidate();
+
+	UpdateData(false);
 }
 
+// 중앙 좌표 구하기 
+// 배열의 갯수를 하나하나 다 센 후 나누기.
+// 다른 방법으로는 CPoint CenterPoint(); 가 있음
+
+//void CgPrjDlg::OnBnClickedBtnGetData()
+//{
+//	unsigned char* fm = (unsigned char*)m_pDlgImage->m_Image.GetBits();
+//	int nWidth = m_pDlgImage->m_Image.GetWidth();
+//	int nHeight = m_pDlgImage->m_Image.GetHeight();
+//	int nPitch = m_pDlgImage->m_Image.GetPitch();
+//
+//	int nTh = 0x80;
+//	int nSumX = 0;
+//	int nSumY = 0;
+//	int nCount = 0;
+//	CRect rect(0, 0, nWidth, nHeight);
+//	for (int j = rect.top; j < rect.bottom; j++) {
+//		for (int i = rect.left; i < rect.right; i++) {
+//			if (fm[j*nPitch + i] > nTh) {
+//				nSumX += i;
+//				nSumY += j;
+//				nCount++;
+//			}
+//		}
+//	}
+//	double dCenterX = (double)nSumX / nCount;
+//	double dCenterY = (double)nSumY / nCount;
+//
+//	cout << dCenterX << "\t" << dCenterY << endl;
+//
+//	m_pDlgImage->Invalidate();
+//}

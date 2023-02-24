@@ -10,4 +10,7 @@
 // 여기에 미리 컴파일하려는 헤더 추가
 #include "framework.h"
 
+#define COLOR_RED		RGB(0xff, 0x00, 0x00)
+#define COLOR_YELLOW	RGB(0xff, 0xff, 0x00)
+
 #endif //PCH_H

@@ -1,9 +1,8 @@
-﻿
-// gPrjDlg.h: 헤더 파일
+﻿// gPrjDlg.h: 헤더 파일
 //
+
 #include "CDlgImage.h"
 #pragma once
-
 
 // CgPrjDlg 대화 상자
 class CgPrjDlg : public CDialogEx
@@ -13,6 +12,7 @@ public:
 	CgPrjDlg(CWnd* pParent = nullptr);	// 표준 생성자입니다.
 
 	CDlgImage* m_pDlgImage;
+
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
@@ -34,11 +34,10 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 
-//private:
-//	void CgPrjDlg::drawData(CDC* pDC);
 
 public:
 	afx_msg void OnDestroy();
 	afx_msg void OnBnClickedBtnTest();
-	CEdit EditRadius;
+	int m_nRadius;
+	//void OnBnClickedBtnGetData();
 };

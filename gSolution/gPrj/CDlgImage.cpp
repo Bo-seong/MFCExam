@@ -5,8 +5,8 @@
 #include "gPrj.h"
 #include "afxdialogex.h"
 #include "CDlgImage.h"
-#include "gPrjDlg.h"
 #include <iostream>
+#include "gPrjDlg.h"
 
 using namespace std;
 
@@ -41,10 +41,9 @@ END_MESSAGE_MAP()
 BOOL CDlgImage::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-
-	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-	MoveWindow(0, 0, 640, 480);
+	SetWindowText(_T("Origin Image"));
 	InitImage();
+	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 	
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -58,19 +57,18 @@ void CDlgImage::OnPaint()
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 	// 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
 	if (m_Image) {
-		drawData(&dc);
-		//m_Image.Draw(dc, 0, 0);
+		m_Image.Draw(dc, 0, 0);
 	}
+	
+	drawData(&dc);
 }
-
-
 
 void CDlgImage::InitImage() 
 {
 	int nWidth = 640;
 	int nHeight = 480;
 	int nBpp = 8;
-
+	
 	m_Image.Create(nWidth, -nHeight, nBpp);
 	if (nBpp == 8) {
 		static RGBQUAD rgb[256];
@@ -85,26 +83,41 @@ void CDlgImage::InitImage()
 	memset(fm, 0xff, nWidth * nHeight);
 }
 
-void CDlgImage::drawData(CDC* pDC) 
+#define color
+void CDlgImage::drawData(CDC* pDC)
 {
-	unsigned char* fm = (unsigned char*)m_Image.GetBits();
+	int nRadius = ((CgPrjDlg*)GetParent())->m_nRadius;
+
+	CPen yellowPen;
+	yellowPen.CreatePen(PS_SOLID, 2, COLOR_YELLOW);
+	CPen* pYellowPen = pDC->SelectObject(&yellowPen);
+
+
 	int nWidth = m_Image.GetWidth();
 	int nHeight = m_Image.GetHeight();
-	int nPitch = m_Image.GetPitch();
-	//int nRadius = 
 
-	int x = rand() % nWidth;
-	int y = rand() % nHeight;
-	//fm[y * nPitch + x] = 0;
+	int nDrawCircleX = rand() % (nWidth - nRadius);
+	int nDrawCircleY = rand() % (nHeight - nRadius);
 
-	cout << x << "," << y << endl;
-
-	// 좌표를 찍음.
-	CRect rect(x, x + 10, y - 10, y);
-	//CRect rectSmall(120, 120, 2, 2);
-
-	// Ellipse 원 그리기.
+	// 원 그리기.
+	CRect rect(nDrawCircleX, nDrawCircleY, nDrawCircleX + nRadius, nDrawCircleY + nRadius);
 	pDC->Ellipse(rect);
-	//pDC->Ellipse(rectSmall);
+	pDC->SelectObject(pYellowPen);
 
+	// 원의 중심 좌표 구하기.
+	CPoint centerPos = rect.CenterPoint();
+
+	CPen redPen;
+	redPen.CreatePen(PS_SOLID, 2, COLOR_RED);
+	CPen* pRedPen = pDC->SelectObject(&redPen);
+	
+	// 가로 한 줄 그리기 
+	CRect rawSquare(centerPos.x - 10, centerPos.y - 20, centerPos.x + 10, centerPos.y + 20);
+	pDC->Rectangle(rawSquare);
+
+	// 세로 한 줄 그리기 
+	CRect colSquare(centerPos.x - 20, centerPos.y - 10, centerPos.x + 20, centerPos.y + 10);
+	pDC->Rectangle(colSquare);
+
+	pDC->SelectObject(pRedPen);
 }
